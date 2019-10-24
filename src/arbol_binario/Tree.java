@@ -1,3 +1,5 @@
+package arbol_binario;
+
 class Tree {
     Node root;
     int totalNodes = 0;
