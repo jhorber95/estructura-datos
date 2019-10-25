@@ -8,20 +8,6 @@ class Tree {
         root = null;
     }
 
-    private static class Node {
-        Node father;
-        Node right;
-        Node left;
-        int key;
-
-        Node(int index) {
-            key = index;
-            right = null;
-            left = null;
-            father = null;
-        }
-    }
-
     public void countNodes(Node n) {
         if (n != null) {
             totalNodes++;
@@ -31,13 +17,14 @@ class Tree {
         }
     }
 
-    public void insert(int i) {
+    public void insert(int i, String data) {
         Node n = new Node(i);
+        n.data = data;
 
         if (root == null) {
             root = n;
         } else {
-            // DE LO CONTRARIO CREAMO UN NO AUXILIAR ARA BUSCAR EN DONDE COLOCARLO, SI A LA DER O IZQ
+            // DE LO CONTRARIO CREAMOs UN NOdo AUXILIAR pARA BUSCAR EN DONDE COLOCARLO, SI A LA DER O IZQ
             Node aux = root;
             //MIENTRAS EL AUXILIAR NO SEA NULO HAGAMOS QUE EL PADRE DEL NODO SEA EL AUXILIAR,
             //ASI VAMOS SUBIENDO EN EL ARBOL
@@ -59,6 +46,22 @@ class Tree {
             } else {
                 n.father.right = n;
             }
+        }
+    }
+
+    private static class Node {
+        Node father;
+        Node right;
+        Node left;
+        int key;
+        String data;
+
+        Node(int index) {
+            key = index;
+            right = null;
+            left = null;
+            father = null;
+            data = null;
         }
     }
 }

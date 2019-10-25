@@ -1,4 +1,5 @@
-package estructura_datos.lifo;
+package posfija;
+
 
 public class Pila {
     private int max = 10;
