@@ -1,82 +1,122 @@
 package estructura_datos.lista_enlazada;
 
+
 public class DoubleList {
     private Node start;
     private Node end;
+    private int totalNodes;
 
     public DoubleList() {
         this.start = null;
         this.end = null;
+        this.totalNodes = 0;
     }
 
-    public void insertAtBegin(String data) {
+    public void add(String data) {
+        Node node = new Node(null, null, data);
+        totalNodes++;
+
         if (start == null) {
-            start = new Node(null, null, data);
-            end = start;
-        } else {
-            Node newNode = new Node(null, start, data);
-            start.setPrevious(newNode);
-            start = newNode;
+            start = node;
+            end = node;
+            return;
         }
+        end.setNext(node);
+        node.setPrevious(end);
+        end = node;
     }
 
-    public void insertAtEnd(String data) {
-        if (start == null) {
-            start = new Node(null, null, data);
-            start = end;
-        } else {
-            Node newNode = new Node(null , end, data);
-            end.setNext(newNode);
-            end = newNode;
+    public void insert(String data, int pos) {
+        totalNodes++;
+
+        if (start == null || totalNodes < pos) {
+            add(data);
+            return;
         }
+        Node node = new Node(null, null, data);
+
+        if (pos == 1) {
+            node.setNext(start);
+            start.setPrevious(node);
+            start = node;
+            return;
+        }
+
+      /*  Node i = start;
+        int cont = 1;
+        while (cont < pos) {
+            i = i.getNext();
+            cont++;
+        }*/
+
+        Node i = getNode(pos);
+
+        i.getPrevious().setNext(node);
+        node.setPrevious(i.getPrevious());
+
+        i.setPrevious(node);
+        node.setNext(i);
     }
 
-    public String deleteStart() {
-        String data = start.getData();
-        start = start.getNext();
-        if(start != null) {
-            start.setPrevious(null);
-        }else {
-            end = null;
+    public boolean delete(int pos) throws Throwable {
+        if (start == null || pos > totalNodes) {
+            return false;
         }
-        return data;
-    }
+        totalNodes--;
 
-    public String deleteEnd() {
-        String data = end.getData();
-        end = end.getPrevious();
-        if(end != null) {
-            end.setNext(null);
-        }else {
-            start = null;
-        }
-        return data;
-    }
-
-    public void showNext() {
-        Node tempNode = start;
-        while (tempNode != null) {
-            System.out.println(tempNode.getData());
-            tempNode = tempNode.getNext();
-        }
-    }
-
-    public void showPrevious() {
-        Node tempNode = end;
-        while (tempNode != null) {
-            System.out.println(tempNode.getData());
-            tempNode = tempNode.getPrevious();
-        }
-    }
-
-    public boolean search(String data) {
-        Node tempNode = end;
-        while (tempNode != null) {
-            if (tempNode.getData().equals(data)){
+//        Eliminar al pricipio
+        if (pos == 1) {
+            Node node = start;
+            if (start.getNext() != null) {
+                start.getNext().setPrevious(null);
+                start = start.getNext();
+                node.finalize();
+                return true;
+            } else {
+                start = null;
                 return true;
             }
-            tempNode = tempNode.getPrevious();
+
         }
-        return false;
+//        eliminar al final
+        if (pos == totalNodes) {
+            Node node = end;
+            end.getPrevious().setNext(null);
+            end = end.getPrevious();
+            node.finalize();
+            return true;
+        }
+
+        Node i = getNode(pos);
+
+        i.getPrevious().setNext(i.getNext());
+        i.getNext().setPrevious(i.getPrevious());
+        i.finalize();
+        return true;
+    }
+
+    private Node getNode(int pos) {
+        Node i = start;
+        int cont = 1;
+        while (cont < pos) {
+            i = i.getNext();
+            cont++;
+        }
+        return i;
+    }
+
+    public int getTotalUser() {
+        return totalNodes;
+    }
+
+    @Override
+    public String toString() {
+        String aux = "";
+        Node tempNode = start;
+        while (tempNode != null) {
+            aux += tempNode.getData() + "\n";
+            tempNode = tempNode.getNext();
+        }
+        return aux;
     }
 }

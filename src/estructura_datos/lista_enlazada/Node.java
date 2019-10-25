@@ -10,6 +10,10 @@ public class Node {
         this.previous = previous;
         this.data = data;
     }
+    @Override
+    public void finalize() throws Throwable {
+        super.finalize();
+    }
 
     public Node getNext() {
         return next;
