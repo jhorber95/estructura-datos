@@ -111,6 +111,7 @@ public class ListaSimplementeLigada {
     }
 
     @Override
+
     public String toString() {
         String aux = "";
         Nodo i = p;
